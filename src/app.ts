@@ -5,7 +5,7 @@ import logging from "./config/logging";
 import config from "./config/config";
 import authRoutes from "./routes/auth.routers";
 import userRoutes from "./routes/user.routers";
-import articleRoutes from "./routes/article.routers"
+import articleRoutes from "./routes/article.routers";
 import mongoose from "mongoose";
 
 const NAMESPACE = "Server";
@@ -63,7 +63,7 @@ router.use((req, res, next) => {
 /** Routes go here */
 router.use("/auth", authRoutes);
 router.use("/users", userRoutes);
-router.use("/articles",articleRoutes)
+router.use("/articles", articleRoutes);
 
 /** Error handling */
 router.use((req, res, next) => {
@@ -76,9 +76,9 @@ router.use((req, res, next) => {
 
 const httpServer = http.createServer(router);
 
-httpServer.listen(config.server.port, () =>
+httpServer.listen(process.env.SERVER_PORT, () =>
   logging.info(
     NAMESPACE,
-    `Server is running ${config.server.hostname}:${config.server.port}`
+    `Server is running ${config.server.hostname}:${process.env.SERVER_PORT}`
   )
 );
