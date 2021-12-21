@@ -10,6 +10,7 @@ const logging_1 = __importDefault(require("./config/logging"));
 const config_1 = __importDefault(require("./config/config"));
 const auth_routers_1 = __importDefault(require("./routes/auth.routers"));
 const user_routers_1 = __importDefault(require("./routes/user.routers"));
+const article_routers_1 = __importDefault(require("./routes/article.routers"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const NAMESPACE = "Server";
 const router = (0, express_1.default)();
@@ -48,6 +49,7 @@ router.use((req, res, next) => {
 /** Routes go here */
 router.use("/auth", auth_routers_1.default);
 router.use("/users", user_routers_1.default);
+router.use("/articles", article_routers_1.default);
 /** Error handling */
 router.use((req, res, next) => {
     const error = new Error("Not found");

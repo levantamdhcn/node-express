@@ -8,7 +8,7 @@ export default interface ArticleState extends Document {
   createdAt: string;
   comments: Comments;
   favoritesCount: number;
-  favorited: boolean;
+  favorited: Array<string>;
 }
 
 export interface CommentState {
