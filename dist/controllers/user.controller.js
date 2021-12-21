@@ -32,7 +32,8 @@ const getAllUsers = (req, res, next) => {
 };
 const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield user_model_1.default.findById(req.params.id);
+        const id = req.params.id.toString();
+        const user = yield user_model_1.default.findById(id);
         res.status(200).json(user);
     }
     catch (error) {
@@ -42,4 +43,120 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
 });
-exports.default = { getAllUsers, getUserById };
+const getUserByUsername = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const username = req.params.username;
+        const user = yield user_model_1.default.find({
+            username: username,
+        });
+        res.status(200).json({ user });
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: error.message,
+            error,
+        });
+    }
+});
+const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { _id, image, email, username, password, bio } = req.body;
+        const duplicateUsername = yield user_model_1.default.findOne({
+            username: username,
+            _id: { $nin: _id },
+        });
+        const duplicateEmail = yield user_model_1.default.findOne({
+            email: email,
+            _id: { $nin: _id },
+        });
+        if (password !== "" && !duplicateUsername && !duplicateEmail) {
+            const userUpdated = yield user_model_1.default.findByIdAndUpdate(req.params.id, {
+                image,
+                email,
+                username,
+                bio,
+                password,
+            });
+            res.status(200).json({
+                message: "Updated successfully!",
+                userUpdated,
+            });
+        }
+        else if (password === "" && !duplicateUsername && !duplicateEmail) {
+            const userUpdated = yield user_model_1.default.findByIdAndUpdate(req.params.id, {
+                image,
+                email,
+                username,
+                bio,
+            });
+            res.status(200).json({
+                message: "Updated successfully!",
+                userUpdated,
+            });
+        }
+        else if (duplicateUsername) {
+            res.status(403).json({
+                message: "Username has been taken!",
+            });
+        }
+        else if (duplicateEmail) {
+            res.status(403).json({
+                message: "Email has been taken!",
+            });
+        }
+    }
+    catch (error) { }
+});
+const addFollowing = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.body;
+        const userIdToFollow = req.params.id;
+        yield user_model_1.default.updateOne({
+            id: userId,
+        }, {
+            $push: {
+                following: userIdToFollow,
+            },
+        });
+        res.status(200).json({
+            message: "Followed",
+            id: userIdToFollow,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            message: error.message,
+            error,
+        });
+    }
+});
+const unFollow = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.body;
+        const userIdToUnfollow = req.params.id;
+        yield user_model_1.default.updateOne({
+            id: userId,
+        }, {
+            $pull: {
+                following: userIdToUnfollow,
+            },
+        });
+        res.status(200).json({
+            message: "Unfollowed",
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            message: error.message,
+            error,
+        });
+    }
+});
+exports.default = {
+    getAllUsers,
+    getUserById,
+    updateUser,
+    addFollowing,
+    unFollow,
+    getUserByUsername,
+};

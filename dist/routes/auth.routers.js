@@ -10,4 +10,6 @@ const router = express_1.default.Router();
 router.get("/validate", extractJWT_1.default, auth_controller_1.default.validateToken);
 router.post("/register", auth_controller_1.default.register);
 router.post("/login", auth_controller_1.default.login);
+router.post("/logout", auth_controller_1.default.logout);
+router.post("/refreshToken", auth_controller_1.default.refreshTokenControl);
 exports.default = router;

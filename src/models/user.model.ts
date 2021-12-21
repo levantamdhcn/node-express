@@ -3,6 +3,7 @@ import UserState from "../interfaces/user";
 
 const UserSchema: Schema = new mongoose.Schema(
   {
+    _id: mongoose.Types.ObjectId,
     username: {
       type: String,
       required: true,

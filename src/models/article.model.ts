@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import ArticleState from "../interfaces/article";
+import ArticleState, { CommentState } from "../interfaces/article";
 
 const ArticleSchema: Schema = new Schema({
   title: {
@@ -10,9 +10,13 @@ const ArticleSchema: Schema = new Schema({
     type: String,
     required: true,
   },
-  content: {
+  body: {
     type: String,
     required: true,
+  },
+  comments: {
+    type: Array,
+    default: [],
   },
   tagList: {
     type: Array,
@@ -21,17 +25,21 @@ const ArticleSchema: Schema = new Schema({
   author: {
     type: Object,
     required: true,
+    username: {
+      type: String,
+    },
+    image: String,
+    bio: String,
   },
-  favoriteCount: {
+  favoritesCount: {
     type: Number,
     required: true,
     default: 0,
   },
   favorited: {
-    type: Boolean,
+    type: Array,
     required: true,
-    default: false,
+    default: [],
   },
 });
-
-export default ArticleSchema;
+export default mongoose.model<ArticleState>("articles", ArticleSchema);
