@@ -7,6 +7,9 @@ import authRoutes from "./routes/auth.routers";
 import userRoutes from "./routes/user.routers";
 import articleRoutes from "./routes/article.routers";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const NAMESPACE = "Server";
 const router = express();
