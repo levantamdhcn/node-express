@@ -8,7 +8,7 @@ router.get("/get/all", extractJWT, controller.getAllUsers);
 router.get("/get/id/:id", controller.getUserById);
 router.get("/get/username/:username", controller.getUserByUsername);
 router.put("/:id", controller.updateUser);
-router.put("/:id/follow", controller.addFollowing);
-router.delete("/:id/follow", controller.unFollow);
+router.put("/:username/follow", controller.addFollowing);
+router.delete("/:username/follow", controller.unFollow);
 
 export default router;

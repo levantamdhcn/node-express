@@ -11,6 +11,6 @@ router.get("/get/all", extractJWT_1.default, user_controller_1.default.getAllUse
 router.get("/get/id/:id", user_controller_1.default.getUserById);
 router.get("/get/username/:username", user_controller_1.default.getUserByUsername);
 router.put("/:id", user_controller_1.default.updateUser);
-router.put("/:id/follow", user_controller_1.default.addFollowing);
-router.delete("/:id/follow", user_controller_1.default.unFollow);
+router.put("/:username/follow", user_controller_1.default.addFollowing);
+router.delete("/:username/follow", user_controller_1.default.unFollow);
 exports.default = router;

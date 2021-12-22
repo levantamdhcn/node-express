@@ -12,6 +12,8 @@ const auth_routers_1 = __importDefault(require("./routes/auth.routers"));
 const user_routers_1 = __importDefault(require("./routes/user.routers"));
 const article_routers_1 = __importDefault(require("./routes/article.routers"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const NAMESPACE = "Server";
 const router = (0, express_1.default)();
 /** Connect to Mongo */
@@ -58,4 +60,4 @@ router.use((req, res, next) => {
     });
 });
 const httpServer = http_1.default.createServer(router);
-httpServer.listen(config_1.default.server.port, () => logging_1.default.info(NAMESPACE, `Server is running ${config_1.default.server.hostname}:${config_1.default.server.port}`));
+httpServer.listen(process.env.PORT || 5000, () => logging_1.default.info(NAMESPACE, `Server is running ${config_1.default.server.hostname}:${process.env.SERVER_PORT}`));

@@ -96,22 +96,31 @@ const updateUser = async (req: Request, res: Response) => {
 
 const addFollowing = async (req: Request, res: Response) => {
   try {
-    const userId = req.body;
-    const userIdToFollow = req.params.id;
-    await User.updateOne(
-      {
-        id: userId,
-      },
-      {
-        $push: {
-          following: userIdToFollow,
-        },
-      }
-    );
-    res.status(200).json({
-      message: "Followed",
-      id: userIdToFollow,
+    const username = req.body;
+    const usernameToFollow = req.params.username;
+    const duplicateUsername = await User.findOne({
+      following: usernameToFollow,
     });
+    if (!duplicateUsername) {
+      await User.updateOne(
+        {
+          username: username,
+        },
+        {
+          $push: {
+            following: usernameToFollow,
+          },
+        }
+      );
+      res.status(200).json({
+        message: "Followed",
+        username: usernameToFollow,
+      });
+    } else
+      res.status(403).json({
+        message: "You have followed this user",
+        username: usernameToFollow,
+      });
   } catch (error: any) {
     res.status(500).json({
       message: error.message,
@@ -122,11 +131,11 @@ const addFollowing = async (req: Request, res: Response) => {
 
 const unFollow = async (req: Request, res: Response) => {
   try {
-    const userId = req.body;
+    const username = req.body;
     const userIdToUnfollow = req.params.id;
     await User.updateOne(
       {
-        id: userId,
+        username: username,
       },
       {
         $pull: {
