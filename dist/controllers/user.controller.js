@@ -109,14 +109,17 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 const addFollowing = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const username = req.body;
+        const username = req.body.username;
         const usernameToFollow = req.params.username;
         const duplicateUsername = yield user_model_1.default.findOne({
             following: usernameToFollow,
         });
+        yield user_model_1.default.findOne({
+            username: username.toString(),
+        });
         if (!duplicateUsername) {
             yield user_model_1.default.updateOne({
-                username: username,
+                username: username.toString(),
             }, {
                 $push: {
                     following: usernameToFollow,
@@ -124,7 +127,7 @@ const addFollowing = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             });
             res.status(200).json({
                 message: "Followed",
-                username: usernameToFollow,
+                username: username,
             });
         }
         else
@@ -142,17 +145,18 @@ const addFollowing = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 const unFollow = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const username = req.body;
-        const userIdToUnfollow = req.params.id;
+        const fromUsername = req.body.username;
+        const usernameToUnfollow = req.params.username;
         yield user_model_1.default.updateOne({
-            username: username,
+            username: fromUsername.toString(),
         }, {
             $pull: {
-                following: userIdToUnfollow,
+                following: usernameToUnfollow.toString(),
             },
         });
         res.status(200).json({
             message: "Unfollowed",
+            username: usernameToUnfollow,
         });
     }
     catch (error) {

@@ -9,6 +9,6 @@ router.get("/get/id/:id", controller.getUserById);
 router.get("/get/username/:username", controller.getUserByUsername);
 router.put("/:id", controller.updateUser);
 router.put("/:username/follow", controller.addFollowing);
-router.delete("/:username/follow", controller.unFollow);
+router.put("/:username/unfollow", controller.unFollow);
 
 export default router;

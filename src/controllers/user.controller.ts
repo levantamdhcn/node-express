@@ -96,10 +96,13 @@ const updateUser = async (req: Request, res: Response) => {
 
 const addFollowing = async (req: Request, res: Response) => {
   try {
-    const username = req.body;
+    const username = req.body.username;
     const usernameToFollow = req.params.username;
     const duplicateUsername = await User.findOne({
       following: usernameToFollow,
+    });
+    await User.findOne({
+      username: username.toString(),
     });
     if (!duplicateUsername) {
       await User.updateOne(
@@ -114,7 +117,7 @@ const addFollowing = async (req: Request, res: Response) => {
       );
       res.status(200).json({
         message: "Followed",
-        username: usernameToFollow,
+        username: username,
       });
     } else
       res.status(403).json({
@@ -131,20 +134,22 @@ const addFollowing = async (req: Request, res: Response) => {
 
 const unFollow = async (req: Request, res: Response) => {
   try {
-    const username = req.body;
-    const userIdToUnfollow = req.params.id;
+    const fromUsername = req.body.username;
+    const usernameToUnfollow = req.params.username;
+
     await User.updateOne(
       {
-        username: username,
+        username: fromUsername.toString(),
       },
       {
         $pull: {
-          following: userIdToUnfollow,
+          following: usernameToUnfollow.toString(),
         },
       }
     );
     res.status(200).json({
       message: "Unfollowed",
+      username: usernameToUnfollow,
     });
   } catch (error: any) {
     res.status(500).json({

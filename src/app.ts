@@ -82,6 +82,6 @@ const httpServer = http.createServer(router);
 httpServer.listen(process.env.PORT || 5000, () =>
   logging.info(
     NAMESPACE,
-    `Server is running ${config.server.hostname}:${process.env.SERVER_PORT}`
+    `Server is running ${config.server.hostname}:${process.env.PORT || 5000}`
   )
 );
