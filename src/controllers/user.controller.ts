@@ -108,7 +108,7 @@ const addFollowing = async (req: Request, res: Response) => {
         },
         {
           $push: {
-            following: usernameToFollow.toString(),
+            following: usernameToFollow,
           },
         }
       );
