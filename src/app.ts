@@ -76,7 +76,7 @@ router.use((req, res, next) => {
 
 const httpServer = http.createServer(router);
 
-httpServer.listen(process.env.SERVER_PORT, () =>
+httpServer.listen(process.env.PORT || 5000, () =>
   logging.info(
     NAMESPACE,
     `Server is running ${config.server.hostname}:${process.env.SERVER_PORT}`
