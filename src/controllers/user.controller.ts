@@ -104,11 +104,11 @@ const addFollowing = async (req: Request, res: Response) => {
     if (!duplicateUsername) {
       await User.updateOne(
         {
-          username: username,
+          username: username.toString(),
         },
         {
           $push: {
-            following: usernameToFollow,
+            following: usernameToFollow.toString(),
           },
         }
       );
